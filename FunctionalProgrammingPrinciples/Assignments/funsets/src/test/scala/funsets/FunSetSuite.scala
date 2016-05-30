@@ -54,6 +54,13 @@ class FunSetSuite extends FunSuite {
     assert(contains(x => true, 100))
   }
 
+  test("filter is implemented"){
+    assert(filter(Set(10), i => i > 10) == false)
+  }
+
+  test("exists is implemented"){
+    assert(exists(Set(10), i => ))
+  }
   /**
    * When writing tests, one would often like to re-use certain values for multiple
    * tests. For instance, we would like to create an Int-set and have multiple test
