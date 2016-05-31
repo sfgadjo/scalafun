@@ -54,12 +54,32 @@ class FunSetSuite extends FunSuite {
     assert(contains(x => true, 100))
   }
 
-  test("filter is implemented"){
-    assert(filter(Set(10), i => i > 10) == false)
+  test("singletonSet is implemented"){
+    assert(singletonSet(1)(1) === true)
+    assert(singletonSet(1)(2) === false)
   }
 
-  test("exists is implemented"){
-    assert(exists(Set(10), i => ))
+  test("union is implemented"){
+    val testFunc = union(i => i < 5, i => i > 10)
+    assert(testFunc(6) === false)
+    assert(testFunc(3) === true)
+    assert(testFunc(12) === true)
+  }
+
+  test("intersect is implemented"){
+    assert()
+  }
+
+  test("filter is implemented"){
+    assert(filter(singletonSet(10), i => i > 9 && i < 18)(10) === true)
+  }
+
+  test("filter even"){
+    val testfunc = filter(i => i > 0 && i < 11, i => i % 2 == 0)
+    assert(testfunc(6) === true)
+    assert(testfunc(5) === false)
+    assert(testfunc(-1) === false)
+    assert(testfunc(12) === false)
   }
   /**
    * When writing tests, one would often like to re-use certain values for multiple

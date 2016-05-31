@@ -26,7 +26,7 @@ object FunSets {
    * Returns the union of the two given sets,
    * the sets of all elements that are in either `s` or `t`.
    */
-    def union(s: Set, t: Set): Set = i=> s(i) || t(i)
+    def union(s: Set, t: Set): Set = i => s(i) || t(i)
   
   /**
    * Returns the intersection of the two given sets,
@@ -67,14 +67,7 @@ object FunSets {
    * Returns whether there exists a bounded integer within `s`
    * that satisfies `p`.
    */
-    def exists(s: Set, p: Int => Boolean): Boolean = {
-      def iter(a: Int): Boolean = {
-        if (a == -bound) false
-        else if (filter(s, p)(a)) true
-        else iter(a - 1)
-      }
-      iter(bound)
-    }
+    def exists(s: Set, p: Int => Boolean): Boolean =  forall(s, a => filter(s, p)(a))
   
   /**
    * Returns a set transformed by applying `f` to each element of `s`.
