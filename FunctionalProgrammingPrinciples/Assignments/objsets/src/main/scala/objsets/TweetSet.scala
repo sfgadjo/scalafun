@@ -152,11 +152,11 @@ class Empty extends TweetSet {
   def descendingByRetweet: TweetList = Nil
 }
 
-class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
+case class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
 
     def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet =
       if(p(elem)) left.filterAcc(p, right.filterAcc(p, acc.incl(elem)))
-      else acc
+      else left.filterAcc(p, right.filterAcc(p, acc))
   
     
   /**
@@ -174,10 +174,11 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     else this
   }
 
-  def remove(tw: Tweet): TweetSet =
+  def remove(tw: Tweet): TweetSet = {
     if (tw.text < elem.text) new NonEmpty(elem, left.remove(tw), right)
     else if (elem.text < tw.text) new NonEmpty(elem, left, right.remove(tw))
     else left.union(right)
+  }
 
   def foreach(f: Tweet => Unit): Unit = {
     f(elem)
@@ -191,7 +192,16 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     * Question: Should we implment this method here, or should it remain abstract
     * and be implemented in the subclasses?
     */
-  def union(that: TweetSet): TweetSet = ((left union right) union that) incl elem
+  def union(that: TweetSet): TweetSet = {
+//    def loop(ts: TweetSet, acc: TweetSet): TweetSet = ts match{
+//      case NonEmpty(e, _, _) => loop(ts.filter(p => !acc.contains(p)), acc.incl(e))
+//      case _ => acc
+//    }
+//
+//    loop(left, loop(right, loop(that,new Empty))).incl(elem)
+
+    ((left union right) union that) incl elem
+  }
 
   /**
     * Returns the tweet from this set which has the greatest retweet count.
@@ -205,10 +215,14 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
   def mostRetweeted: Tweet = {
     val pred = (t: Tweet) => t.retweets > elem.retweets
     val tweetsGreaterThanThis =
-      left.filter(pred) union right.filter(pred)
+      (left.filter(pred)).union(right.filter(pred))
 
-    if (tweetsGreaterThanThis.isInstanceOf[Empty]) elem
-    else tweetsGreaterThanThis.mostRetweeted
+    if (tweetsGreaterThanThis.isInstanceOf[Empty]) {
+      elem
+    }
+    else {
+      tweetsGreaterThanThis.mostRetweeted
+    }
   }
 
   /**
@@ -220,11 +234,22 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     * Question: Should we implment this method here, or should it remain abstract
     * and be implemented in the subclasses?
     */
-  def descendingByRetweet: TweetList =
-    new Cons(mostRetweeted, left union right descendingByRetweet)
+  def descendingByRetweet: TweetList = {
+      val mr = mostRetweeted
+      new Cons(mr, remove(mr).descendingByRetweet)
+  }
 }
 
 trait TweetList {
+  def length: Int =
+    {
+      def loop(acc: Int, xs: TweetList): Int = xs match{
+        case Cons(_, t) => loop(acc + 1, t)
+        case _ => acc
+      }
+      loop(0, this)
+    }
+
   def head: Tweet
   def tail: TweetList
   def isEmpty: Boolean
@@ -241,7 +266,7 @@ object Nil extends TweetList {
   def isEmpty = true
 }
 
-class Cons(val head: Tweet, val tail: TweetList) extends TweetList {
+case class Cons(val head: Tweet, val tail: TweetList) extends TweetList {
   def isEmpty = false
 }
 
@@ -250,14 +275,13 @@ object GoogleVsApple {
   val google = List("android", "Android", "galaxy", "Galaxy", "nexus", "Nexus")
   val apple = List("ios", "iOS", "iphone", "iPhone", "ipad", "iPad")
 
-    lazy val googleTweets: TweetSet = ???
-  lazy val appleTweets: TweetSet = ???
-  
+  lazy val googleTweets: TweetSet = TweetReader.allTweets.filter(t => google.exists( x => t.text.contains(x)))
+  lazy val appleTweets: TweetSet = TweetReader.allTweets.filter(t => apple.exists(x => t.text.contains(x)))
   /**
    * A list of all tweets mentioning a keyword from either apple or google,
    * sorted by the number of retweets.
    */
-     lazy val trending: TweetList = ???
+     lazy val trending: TweetList = googleTweets.descendingByRetweet
   }
 
 object Main extends App {

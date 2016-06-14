@@ -27,6 +27,17 @@ class TweetSetSuite extends FunSuite {
 
   def size(set: TweetSet): Int = asSet(set).size
 
+  test("retweets"){
+    val seta = new Empty
+    val setb = seta.incl(new Tweet("a", "a body", 20))
+    val setc = setb.incl(new Tweet("b", "b body", 20))
+    val setd = setc.incl(new Tweet("c", "c body", 5))
+    val sete = setd.incl(new Tweet("d", "d body", 15))
+
+    assert(sete.descendingByRetweet.head.retweets === 20)
+    assert(sete.descendingByRetweet.length === 4)
+  }
+
   test("filter: on empty set") {
     new TestSets {
       assert(size(set1.filter(tw => tw.user == "a")) === 0)
@@ -48,6 +59,12 @@ class TweetSetSuite extends FunSuite {
   test("union: set4c and set4d") {
     new TestSets {
       assert(size(set4c.union(set4d)) === 4)
+    }
+  }
+
+  test("union: set4d and set5d") {
+    new TestSets {
+      assert(size(set4d.union(set5)) === 4)
     }
   }
 

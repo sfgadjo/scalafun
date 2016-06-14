@@ -45,7 +45,7 @@ object TweetReader {
   }
 
   val sites = List("gizmodo", "TechCrunch", "engadget", "amazondeals", "CNET", "gadgetlab", "mashable")
-  
+
   private val gizmodoTweets = TweetReader.ParseTweets.getTweetData("gizmodo", TweetData.gizmodo)
   private val techCrunchTweets = TweetReader.ParseTweets.getTweetData("TechCrunch", TweetData.TechCrunch)
   private val engadgetTweets = TweetReader.ParseTweets.getTweetData("engadget", TweetData.engadget)
@@ -53,9 +53,8 @@ object TweetReader {
   private val cnetTweets = TweetReader.ParseTweets.getTweetData("CNET", TweetData.CNET)
   private val gadgetlabTweets = TweetReader.ParseTweets.getTweetData("gadgetlab", TweetData.gadgetlab)
   private val mashableTweets = TweetReader.ParseTweets.getTweetData("mashable", TweetData.mashable)
-  
-  private val sources = List(gizmodoTweets, techCrunchTweets, engadgetTweets, amazondealsTweets, cnetTweets, gadgetlabTweets, mashableTweets)
 
+  private val sources = List(gizmodoTweets, techCrunchTweets, engadgetTweets, amazondealsTweets, cnetTweets, gadgetlabTweets, mashableTweets)
   val tweetMap: Map[String, List[Tweet]] =
     Map() ++ Seq((sites(0) -> gizmodoTweets),
                  (sites(1) -> techCrunchTweets),
@@ -65,14 +64,23 @@ object TweetReader {
                  (sites(5) -> gadgetlabTweets),
                  (sites(6) -> mashableTweets))
 
+  def asSet(tweets: TweetSet): Set[Tweet] = {
+    var res = Set[Tweet]()
+    tweets.foreach(res += _)
+    res
+  }
+
+  def size(set: TweetSet): Int = asSet(set).size
+
   val tweetSets: List[TweetSet] = sources.map(tweets => toTweetSet(tweets))
-  
+
   private val siteTweetSetMap: Map[String, TweetSet] =
     Map() ++ (sites zip tweetSets)
-
-  private def unionOfAllTweetSets(curSets: List[TweetSet], acc: TweetSet): TweetSet =
+  private def unionOfAllTweetSets(curSets: List[TweetSet], acc: TweetSet): TweetSet = {
     if (curSets.isEmpty) acc
     else unionOfAllTweetSets(curSets.tail, acc.union(curSets.head))
+  }
 
   val allTweets: TweetSet = unionOfAllTweetSets(tweetSets, new Empty)
+
 }

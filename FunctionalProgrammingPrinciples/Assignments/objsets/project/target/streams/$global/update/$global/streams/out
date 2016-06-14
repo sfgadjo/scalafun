@@ -1,4 +1,4 @@
-[info] Updating {file:/C:/Users/T-Rex/Downloads/objsets/project/}objsets-build...
+[info] Updating {file:/G:/Education/Coursera/FunctionalProgrammingPrinciples/Assignments/objsets/project/}objsets-build...
 [debug] :: resolving dependencies :: default#objsets-build;0.1-SNAPSHOT
 [debug] 	confs: [compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool]
 [debug] 	validate = true
@@ -2817,19 +2817,19 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#apply-macro;0.13.9!apply-macro.jar
 [debug] 	[NOT REQUIRED] org.scala-lang#jline;2.10.5!jline.jar
 [debug] 	[NOT REQUIRED] org.fusesource.jansi#jansi;1.4!jansi.jar
-[debug] :: resolution report :: resolve 1203ms :: artifacts dl 46ms
-[debug] 	report for default#objsets-build;0.1-SNAPSHOT compile produced in C:\Users\T-Rex\Downloads\objsets\project\target\resolution-cache\reports\default-objsets-build-compile.xml
-[debug] 	report for default#objsets-build;0.1-SNAPSHOT runtime produced in C:\Users\T-Rex\Downloads\objsets\project\target\resolution-cache\reports\default-objsets-build-runtime.xml
-[debug] 	report for default#objsets-build;0.1-SNAPSHOT test produced in C:\Users\T-Rex\Downloads\objsets\project\target\resolution-cache\reports\default-objsets-build-test.xml
-[debug] 	report for default#objsets-build;0.1-SNAPSHOT provided produced in C:\Users\T-Rex\Downloads\objsets\project\target\resolution-cache\reports\default-objsets-build-provided.xml
-[debug] 	report for default#objsets-build;0.1-SNAPSHOT optional produced in C:\Users\T-Rex\Downloads\objsets\project\target\resolution-cache\reports\default-objsets-build-optional.xml
-[debug] 	report for default#objsets-build;0.1-SNAPSHOT compile-internal produced in C:\Users\T-Rex\Downloads\objsets\project\target\resolution-cache\reports\default-objsets-build-compile-internal.xml
-[debug] 	report for default#objsets-build;0.1-SNAPSHOT runtime-internal produced in C:\Users\T-Rex\Downloads\objsets\project\target\resolution-cache\reports\default-objsets-build-runtime-internal.xml
-[debug] 	report for default#objsets-build;0.1-SNAPSHOT test-internal produced in C:\Users\T-Rex\Downloads\objsets\project\target\resolution-cache\reports\default-objsets-build-test-internal.xml
-[debug] 	report for default#objsets-build;0.1-SNAPSHOT plugin produced in C:\Users\T-Rex\Downloads\objsets\project\target\resolution-cache\reports\default-objsets-build-plugin.xml
-[debug] 	report for default#objsets-build;0.1-SNAPSHOT sources produced in C:\Users\T-Rex\Downloads\objsets\project\target\resolution-cache\reports\default-objsets-build-sources.xml
-[debug] 	report for default#objsets-build;0.1-SNAPSHOT docs produced in C:\Users\T-Rex\Downloads\objsets\project\target\resolution-cache\reports\default-objsets-build-docs.xml
-[debug] 	report for default#objsets-build;0.1-SNAPSHOT pom produced in C:\Users\T-Rex\Downloads\objsets\project\target\resolution-cache\reports\default-objsets-build-pom.xml
-[debug] 	report for default#objsets-build;0.1-SNAPSHOT scala-tool produced in C:\Users\T-Rex\Downloads\objsets\project\target\resolution-cache\reports\default-objsets-build-scala-tool.xml
-[debug] 	resolve done (1203ms resolve - 46ms download)
+[debug] :: resolution report :: resolve 2440ms :: artifacts dl 51ms
+[debug] 	report for default#objsets-build;0.1-SNAPSHOT compile produced in G:\Education\Coursera\FunctionalProgrammingPrinciples\Assignments\objsets\project\target\resolution-cache\reports\default-objsets-build-compile.xml
+[debug] 	report for default#objsets-build;0.1-SNAPSHOT runtime produced in G:\Education\Coursera\FunctionalProgrammingPrinciples\Assignments\objsets\project\target\resolution-cache\reports\default-objsets-build-runtime.xml
+[debug] 	report for default#objsets-build;0.1-SNAPSHOT test produced in G:\Education\Coursera\FunctionalProgrammingPrinciples\Assignments\objsets\project\target\resolution-cache\reports\default-objsets-build-test.xml
+[debug] 	report for default#objsets-build;0.1-SNAPSHOT provided produced in G:\Education\Coursera\FunctionalProgrammingPrinciples\Assignments\objsets\project\target\resolution-cache\reports\default-objsets-build-provided.xml
+[debug] 	report for default#objsets-build;0.1-SNAPSHOT optional produced in G:\Education\Coursera\FunctionalProgrammingPrinciples\Assignments\objsets\project\target\resolution-cache\reports\default-objsets-build-optional.xml
+[debug] 	report for default#objsets-build;0.1-SNAPSHOT compile-internal produced in G:\Education\Coursera\FunctionalProgrammingPrinciples\Assignments\objsets\project\target\resolution-cache\reports\default-objsets-build-compile-internal.xml
+[debug] 	report for default#objsets-build;0.1-SNAPSHOT runtime-internal produced in G:\Education\Coursera\FunctionalProgrammingPrinciples\Assignments\objsets\project\target\resolution-cache\reports\default-objsets-build-runtime-internal.xml
+[debug] 	report for default#objsets-build;0.1-SNAPSHOT test-internal produced in G:\Education\Coursera\FunctionalProgrammingPrinciples\Assignments\objsets\project\target\resolution-cache\reports\default-objsets-build-test-internal.xml
+[debug] 	report for default#objsets-build;0.1-SNAPSHOT plugin produced in G:\Education\Coursera\FunctionalProgrammingPrinciples\Assignments\objsets\project\target\resolution-cache\reports\default-objsets-build-plugin.xml
+[debug] 	report for default#objsets-build;0.1-SNAPSHOT sources produced in G:\Education\Coursera\FunctionalProgrammingPrinciples\Assignments\objsets\project\target\resolution-cache\reports\default-objsets-build-sources.xml
+[debug] 	report for default#objsets-build;0.1-SNAPSHOT docs produced in G:\Education\Coursera\FunctionalProgrammingPrinciples\Assignments\objsets\project\target\resolution-cache\reports\default-objsets-build-docs.xml
+[debug] 	report for default#objsets-build;0.1-SNAPSHOT pom produced in G:\Education\Coursera\FunctionalProgrammingPrinciples\Assignments\objsets\project\target\resolution-cache\reports\default-objsets-build-pom.xml
+[debug] 	report for default#objsets-build;0.1-SNAPSHOT scala-tool produced in G:\Education\Coursera\FunctionalProgrammingPrinciples\Assignments\objsets\project\target\resolution-cache\reports\default-objsets-build-scala-tool.xml
+[debug] 	resolve done (2440ms resolve - 51ms download)
 [info] Done updating.
