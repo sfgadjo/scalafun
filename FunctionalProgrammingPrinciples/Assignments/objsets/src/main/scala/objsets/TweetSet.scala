@@ -200,7 +200,7 @@ case class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetS
 //
 //    loop(left, loop(right, loop(that,new Empty))).incl(elem)
 
-    ((left union right) union that) incl elem
+    left union (right union (that incl elem))
   }
 
   /**
