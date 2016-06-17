@@ -27,11 +27,13 @@ object Huffman {
     def weight(tree: CodeTree): Int = tree match {
     case Fork(l, r, _, w) => weight(l) + weight(r)
     case Leaf(_, w) => w
+    case _ => throw new NoSuchElementException
   }
   
     def chars(tree: CodeTree): List[Char] = tree match {
       case Fork(l, r, c, _) => chars(l) ::: chars(r)
       case Leaf(c, _) => List(c)
+      case _ => throw new NoSuchElementException
     }
   
   def makeCodeTree(left: CodeTree, right: CodeTree) =
@@ -85,6 +87,7 @@ object Huffman {
           if(idx == -1) loop(t, (h, 1) :: filtered)
           else loop(t, (h, acc(idx)._2 + 1) :: filtered)
         }
+        case _ => throw new NoSuchElementException
       }
 
       loop(chars, List[(Char, Int)]())
@@ -102,6 +105,7 @@ object Huffman {
       def loop(fs: List[(Char, Int)], acc: List[Leaf]): List[Leaf] = fs match {
         case Nil => acc
         case (charac, count) :: t => loop(t, Leaf(charac, count) :: acc)
+        case _ => throw new NoSuchElementException
       }
 
       loop(sortedFreqs, List[Leaf]())
@@ -115,6 +119,7 @@ object Huffman {
         case Nil => weights
         case Leaf(charac, weight) :: t => loop(t, (weights._1 + weight, weights._2))
         case Fork(_, _, _, weight) :: t => loop(t, (weights._1, weights._2 + weight))
+        case _ => throw new NoSuchElementException
       }
 
       val res = loop(trees, (0, 0))
@@ -133,7 +138,19 @@ object Huffman {
    * If `trees` is a list of less than two elements, that list should be returned
    * unchanged.
    */
-    def combine(trees: List[CodeTree]): List[CodeTree] = ???
+    def combine(trees: List[CodeTree]): List[CodeTree] = trees match{
+      case Nil => trees
+      case h :: Nil => trees
+      case h1 :: h2 :: t => makeCodeTree(h1, h2) :: combine(t)
+      case _ => throw new NoSuchElementException
+  }
+
+//  def isort[A](xs: List[A]): List[A] = xs match{
+//    case List() => List()
+//    case y :: ys => insert(y, isort(ys))
+//  }
+//
+//  def insert[A](x: A, xs: List[A]): List[A] = x :: xs
   
   /**
    * This function will be called in the following way:
