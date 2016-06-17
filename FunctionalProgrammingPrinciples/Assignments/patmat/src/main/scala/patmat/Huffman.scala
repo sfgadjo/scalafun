@@ -75,7 +75,20 @@ object Huffman {
    *       println("integer is  : "+ theInt)
    *   }
    */
-    def times(chars: List[Char]): List[(Char, Int)] = ???
+    def times(chars: List[Char]): List[(Char, Int)] = {
+      def loop(cs: List[Char], acc: List[(Char, Int)]): List[(Char, Int)] = cs match {
+        case Nil => acc
+        case h :: t => {
+          val pred = (p: (Char, Int)) => p._1 == h
+          val filtered= acc.filterNot(pred)
+          val idx = acc.indexWhere(pred)
+          if(idx == -1) loop(t, (h, 1) :: filtered)
+          else loop(t, (h, acc(idx)._2 + 1) :: filtered)
+        }
+      }
+
+      loop(chars, List[(Char, Int)]())
+  }
   
   /**
    * Returns a list of `Leaf` nodes for a given frequency table `freqs`.
@@ -84,12 +97,29 @@ object Huffman {
    * head of the list should have the smallest weight), where the weight
    * of a leaf is the frequency of the character.
    */
-    def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = ???
+    def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = {
+      val sortedFreqs = freqs.sortWith(_._2 > _._2)
+      def loop(fs: List[(Char, Int)], acc: List[Leaf]): List[Leaf] = fs match {
+        case Nil => acc
+        case (charac, count) :: t => loop(t, Leaf(charac, count) :: acc)
+      }
+
+      loop(sortedFreqs, List[Leaf]())
+  }
   
   /**
    * Checks whether the list `trees` contains only one single code tree.
    */
-    def singleton(trees: List[CodeTree]): Boolean = ???
+    def singleton(trees: List[CodeTree]): Boolean = {
+      def loop(ts: List[CodeTree], weights: (Int, Int)): (Int, Int) = ts match{
+        case Nil => weights
+        case Leaf(charac, weight) :: t => loop(t, (weights._1 + weight, weights._2))
+        case Fork(_, _, _, weight) :: t => loop(t, (weights._1, weights._2 + weight))
+      }
+
+      val res = loop(trees, (0, 0))
+      return res._1 == res._2
+  }
   
   /**
    * The parameter `trees` of this function is a list of code trees ordered
@@ -153,7 +183,7 @@ object Huffman {
   /**
    * What does the secret message say? Can you decode it?
    * For the decoding use the `frenchCode' Huffman tree defined above.
-   */
+    **/
   val secret: List[Bit] = List(0,0,1,1,1,0,1,0,1,1,1,0,0,1,1,0,1,0,0,1,1,0,1,0,1,1,0,0,1,1,1,1,1,0,1,0,1,1,0,0,0,0,1,0,1,1,1,0,0,1,0,0,1,0,0,0,1,0,0,0,1,0,1)
 
   /**

@@ -28,6 +28,12 @@ class HuffmanSuite extends FunSuite {
     }
   }
 
+  test("times"){
+    new TestTrees{
+      assert(times(List[Char]('a', 'b', 'a', 'b', 'c')) === List[(Char, Int)](('c', 1), ('b', 2), ('a', 2)))
+    }
+  }
+
 
   test("string2chars(\"hello, world\")") {
     assert(string2Chars("hello, world") === List('h', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd'))
@@ -37,6 +43,11 @@ class HuffmanSuite extends FunSuite {
   test("makeOrderedLeafList for some frequency table") {
     assert(makeOrderedLeafList(List(('t', 2), ('e', 1), ('x', 3))) === List(Leaf('e',1), Leaf('t',2), Leaf('x',3)))
   }
+
+  test("makeOrderedLeafList for a more random frequency table") {
+    assert(makeOrderedLeafList(List(('m', 6), ('z', 1), ('x', 3))) === List(Leaf('z',1), Leaf('x',3), Leaf('m',6)))
+  }
+
 
 
   test("combine of some leaf list") {
