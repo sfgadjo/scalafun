@@ -1,5 +1,7 @@
 package patmat
 
+import java.util.NoSuchElementException
+
 import common._
 
 /**
@@ -36,7 +38,7 @@ object Huffman {
       case _ => throw new NoSuchElementException
     }
   
-  def makeCodeTree(left: CodeTree, right: CodeTree) =
+  def makeCodeTree(left: CodeTree, right: CodeTree): CodeTree =
     Fork(left, right, chars(left) ::: chars(right), weight(left) + weight(right))
 
 
@@ -114,16 +116,10 @@ object Huffman {
   /**
    * Checks whether the list `trees` contains only one single code tree.
    */
-    def singleton(trees: List[CodeTree]): Boolean = {
-      def loop(ts: List[CodeTree], weights: (Int, Int)): (Int, Int) = ts match{
-        case Nil => weights
-        case Leaf(charac, weight) :: t => loop(t, (weights._1 + weight, weights._2))
-        case Fork(_, _, _, weight) :: t => loop(t, (weights._1, weights._2 + weight))
-        case _ => throw new NoSuchElementException
-      }
-
-      val res = loop(trees, (0, 0))
-      return res._1 == res._2
+    def singleton(trees: List[CodeTree]): Boolean = trees match{
+    case Nil => throw new NoSuchElementException
+    case Fork(_, _, _,_) :: Nil => true
+    case _ => false
   }
   
   /**
@@ -169,7 +165,10 @@ object Huffman {
    *    the example invocation. Also define the return type of the `until` function.
    *  - try to find sensible parameter names for `xxx`, `yyy` and `zzz`.
    */
-    def until(xxx: ???, yyy: ???)(zzz: ???): ??? = ???
+    def until(singletonPredicate: List[CodeTree] => Boolean, combinator: List[CodeTree] => List[CodeTree])
+             (trees: List[CodeTree]): List[CodeTree] =
+    if(singletonPredicate(trees)) trees
+    else until(singletonPredicate, combinator)(combinator(trees))
   
   /**
    * This function creates a code tree which is optimal to encode the text `chars`.
@@ -177,7 +176,7 @@ object Huffman {
    * The parameter `chars` is an arbitrary text. This function extracts the character
    * frequencies from that text and creates a code tree based on them.
    */
-    def createCodeTree(chars: List[Char]): CodeTree = ???
+    def createCodeTree(chars: List[Char]): CodeTree = until(singleton, combine)(makeOrderedLeafList(times(chars))).head
   
 
   // Part 3: Decoding
@@ -188,7 +187,11 @@ object Huffman {
    * This function decodes the bit sequence `bits` using the code tree `tree` and returns
    * the resulting list of characters.
    */
-    def decode(tree: CodeTree, bits: List[Bit]): List[Char] = ???
+    def decode(tree: CodeTree, bits: List[Bit]): List[Char] = {
+      def loop(ts: CodeTree, acc: List[Char]): List[Char] = ts match{
+        case Leaf(c, w) => 
+      }
+  }
   
   /**
    * A Huffman coding tree for the French language.

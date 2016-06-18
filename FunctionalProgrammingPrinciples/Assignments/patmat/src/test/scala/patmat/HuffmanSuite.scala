@@ -55,11 +55,41 @@ class HuffmanSuite extends FunSuite {
     assert(combine(leaflist) === List(Fork(Leaf('e',1),Leaf('t',2),List('e', 't'),3), Leaf('x',4)))
   }
 
+  test("singleton false case"){
+    val leaflist = List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 4))
+    assert(singleton(leaflist) === false)
+  }
+
+  test("singleton true case"){
+    val leaflist = List(Fork(Leaf('e',1),Leaf('t',2),List('e', 't'),3))
+    assert(singleton(leaflist) === true)
+  }
+
+  test("singleton true case with nested forks"){
+    val leaflist = List(Fork(Fork(Leaf('z',1),Leaf('a', 1), List('z','a', 't', 'e'), 4),Leaf('t',2),List('e', 't'),3))
+    assert(singleton(leaflist) === true)
+  }
+
+  test("until"){
+    val leaflist = List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 4))
+    val expected = List(Fork(Fork(Leaf('e',1),Leaf('t',2),List('e', 't'),3),Leaf('x',4),List('e', 't', 'x'),7))
+    assert(until(singleton, combine)(leaflist) === expected)
+  }
+
+  test("singleton with single leave"){
+    val leaflist = List(Leaf('e', 1))
+    assert(singleton(leaflist) === false)
+  }
+
+  test("create codetree"){
+    val charlist = List('t','x','x','e','x','t','x')
+    val expected = Fork(Fork(Leaf('e',1),Leaf('t',2),List('e', 't'),3),Leaf('x',4),List('e', 't', 'x'),7)
+    assert(createCodeTree(charlist) === expected)
+  }
 
   test("decode and encode a very short text should be identity") {
     new TestTrees {
       assert(decode(t1, encode(t1)("ab".toList)) === "ab".toList)
     }
   }
-
 }
