@@ -33,7 +33,7 @@ object Huffman {
   }
   
     def chars(tree: CodeTree): List[Char] = tree match {
-      case Fork(l, r, c, _) => chars(l) ::: chars(r)
+      case Fork(l, r, c, _) => c
       case Leaf(c, _) => List(c)
       case _ => throw new NoSuchElementException
     }
@@ -188,11 +188,22 @@ object Huffman {
    * the resulting list of characters.
    */
     def decode(tree: CodeTree, bits: List[Bit]): List[Char] = {
-      def loop(ts: CodeTree, acc: List[Char]): List[Char] = ts match{
-        case Leaf(c, w) => 
+      def loop(ts: CodeTree, bs: List[Bit], acc: List[Char]): List[Char] = {
+        if(bs.isEmpty) acc
+        else {
+          val headBit = bs.head
+          val tail = bs.tail
+          ts match {
+            case Leaf(c, _) => loop(tree, tail, c :: acc)
+            case Fork(l, r, _, _) => loop(if(headBit == 0) l else r, tail, acc)
+            case _ => throw new NoSuchElementException
+          }
+        }
       }
+
+      loop(tree, bits, List[Char]())
   }
-  
+
   /**
    * A Huffman coding tree for the French language.
    * Generated from the data given at
@@ -209,7 +220,7 @@ object Huffman {
   /**
    * Write a function that returns the decoded secret
    */
-    def decodedSecret: List[Char] = ???
+    def decodedSecret: List[Char] = decode(frenchCode, secret)
   
 
   // Part 4a: Encoding using Huffman tree
@@ -218,8 +229,28 @@ object Huffman {
    * This function encodes `text` using the code tree `tree`
    * into a sequence of bits.
    */
-    def encode(tree: CodeTree)(text: List[Char]): List[Bit] = ???
-  
+  def encode(tree: CodeTree)(text: List[Char]): List[Bit] = {
+
+    def loop(tx: List[Char], acc: List[Bit]): List[Bit] = tx match{
+      case Nil => acc
+      case h :: t => loop(t, acc ::: getCodeForChar(h, tree))
+    }
+
+    loop(text, List[Bit]())
+  }
+
+  def getCodeForChar(charac: Char, tree: CodeTree): List[Bit] = {
+
+    def loop(node: CodeTree): List[Bit] = node match{
+      case Leaf(_, _) => Nil
+      case Fork(l, r, _, _) =>
+        if(chars(l).contains(charac)) 0 :: loop(l)
+        else 1 :: loop(r)
+    }
+
+    loop(tree)
+  }
+
   // Part 4b: Encoding using code table
 
   type CodeTable = List[(Char, List[Bit])]
