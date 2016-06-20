@@ -89,30 +89,37 @@ class HuffmanSuite extends FunSuite {
     assert(createCodeTree(charlist) === expected)
   }
 
-//  test("create codetree 2"){
-//    var charlist = List('a','a','a','a','a','a','a','a','b','b','b','c', 'd', 'e', 'f', 'g', 'h')
-//    assert(createCodeTree(charlist) === Nil)
-//    val x=
-//      Fork(
-//        Fork(
-//          Fork(
-//            Leaf(c,1),Leaf(d,1),List(c, d),2), Fork(Leaf(e,1),Leaf(f,1),List(e, f),2),List(c, d, e, f),4),Fork(Fork(Leaf(g,1),Leaf(h,1),List(g, h),2),Fork(Leaf(b,3),Leaf(a,8),List(b, a),11),List(g, h, b, a),13),List(c, d, e, f, g, h, b, a),17)
-//  }
-
   test("decode and encode a very short text should be identity") {
     new TestTrees {
       assert(decode(t1, encode(t1)("ab".toList)) === "ab".toList)
     }
   }
 
-//  test("code for char"){
-//    val charlist = List('t','x','x','e','x','t','x', 'h','k', 'm','n','n','h','i')
-//    var tree = createCodeTree(charlist)
-//    println(tree)
-//    assert(getCodeForChar('m', tree) == Nil)
-//  }
-//
+  test("decode and encode a longer text") {
+    val charlist = List('t','h','i','s','i','s','s', 'p','a','r','t','a')
+    val tree = createCodeTree(charlist)
+    val encoded = encode(tree)(charlist)
+    val decoded = decode(tree, encoded)
+    assert(decode(tree, encoded) === charlist)
+
+  }
+
+  test("decode and quick encode a longer text") {
+    val charlist = List('t','h','i','s','i','s','s', 'p','a','r','t','a')
+    val tree = createCodeTree(charlist)
+    val encoded = quickEncode(tree)(charlist)
+    val decoded = decode(tree, encoded)
+    assert(decode(tree, encoded) === charlist)
+
+  }
+
+  test("encode"){
+    val charlist = List('t','x','x','e','x','t','x')
+    val tree = createCodeTree(charlist)
+    assert(encode(tree)(charlist) === List(0, 1, 1, 1, 0, 0, 1, 0, 1, 1))
+  }
+
   test("decoded french secret"){
-    assert(decodedSecret === List[Char]())
+    assert(decodedSecret === List('h', 'u', 'f', 'f', 'm', 'a', 'n', 'e', 's', 't', 'c', 'o', 'o', 'l'))
   }
 }
