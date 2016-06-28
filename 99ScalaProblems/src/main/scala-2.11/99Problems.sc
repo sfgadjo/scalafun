@@ -155,3 +155,9 @@ def encodeDirect[A](l: List[A]): List[(Int, A)] ={
 }
 
 val ecd = encodeDirect(List("a", "a", 1, "c", "a", "a", "a", "d"))
+
+
+
+val s = "hi there"
+
+s.filter()
