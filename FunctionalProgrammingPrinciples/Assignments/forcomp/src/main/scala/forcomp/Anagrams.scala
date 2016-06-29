@@ -35,8 +35,8 @@ object Anagrams {
    *  Note: you must use `groupBy` to implement this method!
    */
   def wordOccurrences(w: Word): Occurrences ={
-    val grouped: Map[Char,String] = w.groupBy(c => c)
-    val mapped = grouped.toList.map(pair => (pair._1.toLower, pair._2.length))
+    val grouped = w.toLowerCase.groupBy(c => c)
+    val mapped = grouped.toList.map(pair => (pair._1, pair._2.length))
     val sorted = mapped.sortWith((first, second) => first._1 < second._1)
     sorted
   }
@@ -59,10 +59,15 @@ object Anagrams {
    *    List(('a', 1), ('e', 1), ('t', 1)) -> Seq("ate", "eat", "tea")
    *
    */
-  lazy val dictionaryByOccurrences: Map[Occurrences, List[Word]] = ???
+  lazy val dictionaryByOccurrences: Map[Occurrences, List[Word]] = {
+    dictionary
+      .map(word => (word, wordOccurrences(word)))
+      .groupBy(k => k._2)
+      .map(s => (s._1, s._2.map(x => x._1)))
+  }
 
   /** Returns all the anagrams of a given word. */
-  def wordAnagrams(word: Word): List[Word] = ???
+  def wordAnagrams(word: Word): List[Word] = dictionaryByOccurrences.getOrElse(wordOccurrences(word), List[Word]())
 
   /** Returns the list of all subsets of the occurrence list.
    *  This includes the occurrence itself, i.e. `List(('k', 1), ('o', 1))`
