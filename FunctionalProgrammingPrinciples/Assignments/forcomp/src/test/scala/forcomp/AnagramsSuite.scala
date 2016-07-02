@@ -10,6 +10,16 @@ import Anagrams._
 @RunWith(classOf[JUnitRunner])
 class AnagramsSuite extends FunSuite  {
 
+  test("foo"){
+    val x = List(('c', 1), ('a', 2))
+    val y = x.combinations(1).toList
+
+    def loop(n :Int, xs: List[(Char,Int)]): List[List[(Char,Int)]] =
+      if(n == 0) List[List[(Char,Int)]]()
+      else loop(n - 1, xs) ::: xs.combinations(n).toList
+
+    println(loop(x.length, x))
+  }
   test("wordOccurrences: abcd") {
     assert(wordOccurrences("abcd") === List(('a', 1), ('b', 1), ('c', 1), ('d', 1)))
   }

@@ -92,19 +92,30 @@ object Anagrams {
    *  in the example above could have been displayed in some other order.
    */
   def combinations(occurrences: Occurrences): List[Occurrences] = {
-    val acc = List[List[(Char, Int)]](List[(Char, Int)](), occurrences)
+    val acc = List[List[(Char, Int)]](List[(Char, Int)]())
 
     val singles = for{
       (char, times) <- occurrences
-      num <- times to 1 by -1
+      num <- 1 to times
     } yield (char, num)
 
-    val breakOut = for{
-      s1 <- singles
-    } yield singles.dropWhile(_ == s1)
-    println(singles)
-    acc
+    val baseCombs = combinator(occurrences.length, occurrences) ::: acc
+
+    val z = for{
+      combList <- baseCombs
+      (char, times) <- combList
+      num <- 1 to times
+                    } yield 
+    def loop(xs: List[(Char,Int)], acc: List[List[(Char,Int)]]): List[List[(Char,Int)]] = xs match{
+      case Nil => acc
+      case (c, n) :: t =>
+    }
+    baseCombs
   }
+
+  private def combinator(n :Int, xs: List[(Char,Int)]): List[List[(Char,Int)]] =
+    if(n == 0) List[List[(Char,Int)]]()
+    else combinator(n - 1, xs) ::: xs.combinations(n).toList
 
   /** Subtracts occurrence list `y` from occurrence list `x`.
    *
