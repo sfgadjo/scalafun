@@ -10,16 +10,6 @@ import Anagrams._
 @RunWith(classOf[JUnitRunner])
 class AnagramsSuite extends FunSuite  {
 
-  test("foo"){
-    val x = List(('c', 1), ('a', 2))
-    val y = x.combinations(1).toList
-
-    def loop(n :Int, xs: List[(Char,Int)]): List[List[(Char,Int)]] =
-      if(n == 0) List[List[(Char,Int)]]()
-      else loop(n - 1, xs) ::: xs.combinations(n).toList
-
-    println(loop(x.length, x))
-  }
   test("wordOccurrences: abcd") {
     assert(wordOccurrences("abcd") === List(('a', 1), ('b', 1), ('c', 1), ('d', 1)))
   }
@@ -74,6 +64,19 @@ class AnagramsSuite extends FunSuite  {
       List(('a', 1), ('b', 2)),
       List(('a', 2), ('b', 2))
     )
+
+    val y =
+      Set(
+        List(('a',1)),
+        List(('b',1)),
+        List(('b',2), ('a',2)),
+        List(('b',2)),
+        List(('a',1), ('b',1)),
+        List(),
+        List(('b',1), ('a',2)),
+        List(('a',2)),
+        List(('a',1), ('b',2)))
+
     assert(combinations(abba).toSet === abbacomb.toSet)
   }
 
@@ -107,6 +110,29 @@ class AnagramsSuite extends FunSuite  {
       List("rulez", "Linux"),
       List("Linux", "rulez")
     )
+    assert(sentenceAnagrams(sentence).toSet === anas.toSet)
+  }
+
+  test("short anagram"){
+    val sentence = List("yes", "man")
+
+    val anas =
+      List(
+              List("en", "as", "my"),
+              List("en", "my", "as"),
+              List("man", "yes"),
+              List("men", "say"),
+              List("as", "en", "my"),
+              List("as", "my", "en"),
+              List("sane", "my"),
+              List("Sean", "my"),
+              List("my", "en", "as"),
+              List("my", "as", "en"),
+              List("my", "sane"),
+              List("my", "Sean"),
+              List("say", "men"),
+              List("yes", "man")
+              )
     assert(sentenceAnagrams(sentence).toSet === anas.toSet)
   }
 

@@ -92,30 +92,29 @@ object Anagrams {
    *  in the example above could have been displayed in some other order.
    */
   def combinations(occurrences: Occurrences): List[Occurrences] = {
-    val acc = List[List[(Char, Int)]](List[(Char, Int)]())
+    if(occurrences.isEmpty) List(List[(Char,Int)]())
+    else {
+      val singles = for {
+        (c, n) <- occurrences
+        num <- 1 to n
+      } yield (c, num)
 
-    val singles = for{
-      (char, times) <- occurrences
-      num <- 1 to times
-    } yield (char, num)
+      val groupedSingles = singles.groupBy(k => k._1)
 
-    val baseCombs = combinator(occurrences.length, occurrences) ::: acc
+      val combos = (for {
+        n <- 1 to occurrences.length
+        l <- occurrences.combinations(n).toList
+      } yield l).toList
 
-    val z = for{
-      combList <- baseCombs
-      (char, times) <- combList
-      num <- 1 to times
-                    } yield 
-    def loop(xs: List[(Char,Int)], acc: List[List[(Char,Int)]]): List[List[(Char,Int)]] = xs match{
-      case Nil => acc
-      case (c, n) :: t =>
+      val res = for {
+        l <- combos
+        (c, n) <- l
+        (c2, n2) <- groupedSingles.getOrElse(c, List[(Char, Int)]())
+      } yield ((c2, n2) :: l.filterNot(p => p ==(c, n))).sortWith((first, second) => first._1 < second._1)
+
+      occurrences.map(m => (m._1, 1)) :: (List[(Char, Int)]() :: res.dropWhile(p => p == occurrences))
     }
-    baseCombs
   }
-
-  private def combinator(n :Int, xs: List[(Char,Int)]): List[List[(Char,Int)]] =
-    if(n == 0) List[List[(Char,Int)]]()
-    else combinator(n - 1, xs) ::: xs.combinations(n).toList
 
   /** Subtracts occurrence list `y` from occurrence list `x`.
    *
@@ -174,5 +173,16 @@ object Anagrams {
    *
    *  Note: There is only one anagram of an empty sentence.
    */
-  def sentenceAnagrams(sentence: Sentence): List[Sentence] = ???
+  def sentenceAnagrams(sentence: Sentence): List[Sentence] = {
+    if (sentence.isEmpty) List[Sentence]()
+    else {
+      val sentenceCombos = combinations(sentenceOccurrences(sentence))
+
+      val res = for {
+        occurrences <- sentenceCombos
+        words <- dictionaryByOccurrences.get(occurrences)
+      } yield words
+      res
+    }
+  }
 }
