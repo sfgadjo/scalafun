@@ -37,8 +37,6 @@ class AnagramsSuite extends FunSuite  {
     assert(wordAnagrams("player").toSet === Set("parley", "pearly", "player", "replay"))
   }
 
-
-
   test("subtract: lard - r") {
     val lard = List(('a', 1), ('d', 1), ('l', 1), ('r', 1))
     val r = List(('r', 1))
@@ -53,6 +51,7 @@ class AnagramsSuite extends FunSuite  {
 
   test("combinations: abba") {
     val abba = List(('a', 2), ('b', 2))
+//    val abba = List(('a',2), ('b',2),('c', 3))
     val abbacomb = List(
       List(),
       List(('a', 1)),
@@ -134,6 +133,11 @@ class AnagramsSuite extends FunSuite  {
               List("yes", "man")
               )
     assert(sentenceAnagrams(sentence).toSet === anas.toSet)
+  }
+
+  test("sdfs"){
+    val combos = combinations(sentenceOccurrences(List("yes", "man")))
+    assert(combos === List())
   }
 
 }

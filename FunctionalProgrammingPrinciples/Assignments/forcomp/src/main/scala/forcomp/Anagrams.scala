@@ -59,12 +59,12 @@ object Anagrams {
    *    List(('a', 1), ('e', 1), ('t', 1)) -> Seq("ate", "eat", "tea")
    *
    */
-  lazy val dictionaryByOccurrences: Map[Occurrences, List[Word]] = {
+  lazy val dictionaryByOccurrences: Map[Occurrences, List[Word]] =
     dictionary
       .map(word => (word, wordOccurrences(word)))
       .groupBy(k => k._2)
       .map(s => (s._1, s._2.map(x => x._1)))
-  }
+
 
   /** Returns all the anagrams of a given word. */
   def wordAnagrams(word: Word): List[Word] = dictionaryByOccurrences.getOrElse(wordOccurrences(word), List[Word]())
@@ -112,9 +112,10 @@ object Anagrams {
         (c2, n2) <- groupedSingles.getOrElse(c, List[(Char, Int)]())
       } yield ((c2, n2) :: l.filterNot(p => p ==(c, n))).sortWith((first, second) => first._1 < second._1)
 
-      occurrences.map(m => (m._1, 1)) :: (List[(Char, Int)]() :: res.dropWhile(p => p == occurrences))
+      occurrences.map(m => (m._1, 1)) :: (List[(Char, Int)]() :: res.dropWhile(p => p == occurrences).distinct)
     }
   }
+
 
   /** Subtracts occurrence list `y` from occurrence list `x`.
    *
@@ -174,14 +175,14 @@ object Anagrams {
    *  Note: There is only one anagram of an empty sentence.
    */
   def sentenceAnagrams(sentence: Sentence): List[Sentence] = {
-    if (sentence.isEmpty) List[Sentence]()
-    else {
-      val sentenceCombos = combinations(sentenceOccurrences(sentence))
-
+    if(sentence.isEmpty) List[Sentence](Nil)
+    else{
+      val sentenceOccurenceList = sentenceOccurrences(sentence)
       val res = for {
-        occurrences <- sentenceCombos
+        occurrences <- combinations(sentenceOccurenceList)
         words <- dictionaryByOccurrences.get(occurrences)
       } yield words
+
       res
     }
   }
