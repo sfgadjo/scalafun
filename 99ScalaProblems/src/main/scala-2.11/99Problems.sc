@@ -160,4 +160,23 @@ val ecd = encodeDirect(List("a", "a", 1, "c", "a", "a", "a", "d"))
 
 val s = "hi there"
 
-s.filter()
+
+def rotateLeft[A](n: Int, ls: List[A]): List[A] = ls match {
+  case h :: t if n > 0 => rotateLeft(n - 1, t ::: List[A](h))
+  case _ => ls
+}
+
+val rotateL = rotateLeft(5, List(1,2,3,4))
+
+
+def rotate[A](n: Int, ls: List[A]): List[A] = {
+  val boundedIndex = if(ls.isEmpty) 0 else n % ls.length
+  if(boundedIndex < 0) rotate(boundedIndex + ls.length, ls)
+  else (ls drop boundedIndex) ::: (ls take boundedIndex)
+}
+
+val rot = rotate(-2, List(1,2,3,4))
+
+val rot2 = rotate(3, List(1,2,3,4))
+
+val  b = -5 % 4
