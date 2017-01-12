@@ -59,21 +59,29 @@ object RNG {
     ((d1, d2, d3), r3)
   }
 
-  def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
-    def go(c: Int, acc: List[Int],r: RNG): (List[Int], RNG) = {
-      if(c <= 0) (acc, r)
-      else {
-        val (i:Int, r2) = r.nextInt
-        go(c - 1, i :: acc, r2)
+//  def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+//    def go(c: Int, acc: List[Int], r: RNG): (List[Int], RNG) = {
+//      if (c <= 0) (acc, r)
+//      else {
+//        val (i: Int, r2) = r.nextInt
+//        go(c - 1, i :: acc, r2)
+//      }
+//    }
+//  }
+
+    def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = ???
+
+    def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = {
+      rng => fs.foldRight((List[A](), rng))((r, b) => {
+        val randNum: (A, RNG) = r(b._2)
+        (randNum._1 :: b._1, randNum._2)
       }
+      )
     }
 
-  def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = ???
+    def flatMap[A,B](f: Rand[A])(g: A => Rand[B]): Rand[B] = ???
 
-  def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = ???
-
-  def flatMap[A,B](f: Rand[A])(g: A => Rand[B]): Rand[B] = ???
-}
+  }
 
 case class State[S,+A](run: S => (A, S)) {
   def map[B](f: A => B): State[S, B] =
