@@ -1,3 +1,5 @@
+import scala.annotation.tailrec
+
 //http://aperiodic.net/phil/scala/s-99/
 
 @annotation.tailrec
@@ -156,11 +158,6 @@ def encodeDirect[A](l: List[A]): List[(Int, A)] ={
 
 val ecd = encodeDirect(List("a", "a", 1, "c", "a", "a", "a", "d"))
 
-
-
-val s = "hi there"
-
-
 def rotateLeft[A](n: Int, ls: List[A]): List[A] = ls match {
   case h :: t if n > 0 => rotateLeft(n - 1, t ::: List[A](h))
   case _ => ls
@@ -180,3 +177,16 @@ val rot = rotate(-2, List(1,2,3,4))
 val rot2 = rotate(3, List(1,2,3,4))
 
 val  b = -5 % 4
+
+
+
+def duplicate[T](ls: List[T]): List[T] = ls match {
+  case Nil => ls
+  case h :: t => List(h, h) ::: duplicate(t)
+}
+
+//pull off head and call duplicate n times, concat with acc
+def duplicateN[T](n: Int, ls: List[T]): List[T] = ls flatMap {List.fill(n)(_)}
+
+val dupe = duplicateN(4, List("a", "b", "c", "c", "d"))
+
